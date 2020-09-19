@@ -8,10 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -64,13 +61,13 @@ public class DeviceRunInfoController {
 //
     @ApiOperation(value = "获取最新的设备信息")
     @RequestMapping(path = "/latestRunInfo", method = RequestMethod.GET)
-    public Object getByDeviceNo(@RequestParam("deviceNo") String deviceNo, @RequestParam("token") String token){
+    public Object getByDeviceNo(@RequestParam("deviceNo") String deviceNo, @RequestHeader(value="token") String token){
             return deviceRunInfoService.getLastestDeviceRunInfoByDeviceNo(deviceNo);
     }
 
     @ApiOperation(value = "获取全部设备信息")
     @RequestMapping(path = "/getAllRunInfo", method = RequestMethod.GET)
-    public List<DeviceRunInfo> getAllRunInfo(@RequestParam("token") String token){
+    public List<DeviceRunInfo> getAllRunInfo(@RequestHeader(value="token") String token){
         List<Device> devices = deviceService.getAll();
         List<DeviceRunInfo> deviceRunInfoList = new ArrayList<>();
         for(int i = 0; i < devices.size(); i++){

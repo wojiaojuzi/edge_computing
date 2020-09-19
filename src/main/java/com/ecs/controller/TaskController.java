@@ -11,10 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,21 +40,21 @@ public class TaskController {
 
     @ApiOperation(value = "获取全部任务")
     @RequestMapping(path = "/getAllTasks", method = RequestMethod.GET)
-    public List<Car> getAllCars(@RequestParam("token") String token) throws Exception{
+    public List<Car> getAllCars(@RequestHeader(value="token") String token) throws Exception{
         String userId = adminService.getUserIdFromToken(token);
         return taskService.getAllCars();
     }
 
     @ApiOperation(value = "获得车辆数量")
     @RequestMapping(path = "/getNumbersOfCars", method = RequestMethod.GET)
-    public String getNumbersOfCars(@RequestParam("token") String token) throws Exception{
+    public String getNumbersOfCars(@RequestHeader(value="token") String token) throws Exception{
         String userId = adminService.getUserIdFromToken(token);
         return String.valueOf(taskService.getAllCars().size());
     }
 
     @ApiOperation(value = "获取单个任务信息")
     @RequestMapping(path = "/getTask", method = RequestMethod.GET)
-    public String getTask(@RequestParam("taskNo") String taskNo, @RequestParam("token") String token) throws Exception{
+    public String getTask(@RequestParam("taskNo") String taskNo, @RequestHeader(value="token") String token) throws Exception{
         String userId = adminService.getUserIdFromToken(token);
         List<Task> list = taskService.getTask(taskNo);
         JSONObject json = new JSONObject();
@@ -93,7 +90,7 @@ public class TaskController {
 
     @ApiOperation(value = "获取车辆信息")
     @RequestMapping(path = "/getAboutCar", method = RequestMethod.GET)
-    public String getCar(@RequestParam("carNo") String carNo, @RequestParam("token") String token) throws Exception{
+    public String getCar(@RequestParam("carNo") String carNo, @RequestHeader(value="token") String token) throws Exception{
         String userId = adminService.getUserIdFromToken(token);
         List<Task> list = taskService.getByCarNo(carNo);
         Car car = taskService.getCarByCarNo(carNo);
@@ -125,7 +122,7 @@ public class TaskController {
 
     @ApiOperation(value = "获取警察的任务信息（手持机）")
     @RequestMapping(path = "/deviceGetTasks", method = RequestMethod.GET)
-    public PrisonerAndTask getByUserId(@RequestParam("userName") String userName, @RequestParam("token") String token) {
+    public PrisonerAndTask getByUserId(@RequestParam("userName") String userName, @RequestHeader(value="token") String token) {
         PrisonerAndTask prisonerAndTask = new PrisonerAndTask();
         Task task = taskService.getTaskByUserName(userName);
         prisonerAndTask.setTask(task);
@@ -138,7 +135,7 @@ public class TaskController {
     * */
     @ApiOperation(value = "获取警察绑定犯人信息（一体机）")
     @RequestMapping(path = "/getByUser", method = RequestMethod.GET)
-    public String getPrisonerId(@RequestParam("userId") String userId, @RequestParam("token") String token) throws Exception{
+    public String getPrisonerId(@RequestParam("userId") String userId, @RequestHeader(value="token") String token) throws Exception{
         String user_Id = adminService.getUserIdFromToken(token);
         return taskService.getPrisonerIdByUserId(userId);
     }

@@ -41,7 +41,7 @@ public class PrisonerController {
 
     @ApiOperation(value = "获取单个犯人信息")
     @RequestMapping(path = "/get", method = RequestMethod.GET)
-    public Prisoner getById(@RequestParam("prisonerId") String prisonerId, @RequestParam("token") String token) throws Exception{
+    public Prisoner getById(@RequestParam("prisonerId") String prisonerId,@RequestHeader(value="token") String token) throws Exception{
         String userId = adminService.getUserIdFromToken(token);
         return prisonerService.getById(prisonerId);
     }
@@ -51,7 +51,8 @@ public class PrisonerController {
 //    public List<Prisoner> getAll() {
 //        return prisonerService.getAll();
 //    }
-    public List<PrisonerAndTask> getAll(@RequestParam("token") String token) throws Exception{
+    public List<PrisonerAndTask> getAll(@RequestHeader(value="token") String token) throws Exception{
+        System.out.println("2222"+token);
         String userId = adminService.getUserIdFromToken(token);
         List<Prisoner> prisoners = prisonerService.getAll();
         List<PrisonerAndTask> prisonerAndCarAndTaskList = new ArrayList<>();

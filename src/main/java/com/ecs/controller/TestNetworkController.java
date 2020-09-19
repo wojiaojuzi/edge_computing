@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,7 +34,7 @@ public class TestNetworkController {
     @ApiOperation(value = "获得丢包时延")
     @RequestMapping(path = "/networkCondition",method = RequestMethod.GET)
     @ResponseBody
-    public String networksCon() throws IOException {
+    public String networksCon(@RequestHeader(value="token") String token) throws IOException {
         JSONObject json = new JSONObject();
         json.put("delay",testNetworksService.getNetworkDelay());
 //        json.put("packet_loss",testNetworksService.getNetworkPacketLoss());

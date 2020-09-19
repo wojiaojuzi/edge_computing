@@ -39,7 +39,7 @@ public class AbnormalConditionController {
 
     @ApiOperation(value = "全部异常")
     @RequestMapping(path = "/getAllExceptions", method = RequestMethod.GET)
-    public List<AbnormalCondition> getAllExceptions(@RequestParam("token") String token) throws Exception{
+    public List<AbnormalCondition> getAllExceptions(@RequestHeader(value="token") String token) throws Exception{
             String userId = adminService.getUserIdFromToken(token);
             List<RiskLevel> list = abnormalConditionService.getAllHighRiskLevel();
             List<AbnormalCondition> abnormalConditions = new ArrayList<>();
@@ -68,7 +68,7 @@ public class AbnormalConditionController {
 
     @ApiOperation(value = "处理情况修改")
     @RequestMapping(path = "/changeState", method = RequestMethod.POST)
-    public String updateDealState(@RequestBody ChangeStateRequest changeStateRequest, @RequestHeader("token") String token){
+    public String updateDealState(@RequestBody ChangeStateRequest changeStateRequest, @RequestHeader(value="token") String token){
         System.out.println(token);
         abnormalConditionService.updateDealState(changeStateRequest.getId());
         return "处理完毕";
@@ -76,21 +76,21 @@ public class AbnormalConditionController {
 
     @ApiOperation(value = "误报处理")
     @RequestMapping(path = "/misdeclaration", method = RequestMethod.POST)
-    public String updateMisdeclaration(@RequestBody ChangeStateRequest changeStateRequest){
+    public String updateMisdeclaration(@RequestBody ChangeStateRequest changeStateRequest,@RequestHeader(value="token") String token){
         abnormalConditionService.updateMisdeclaration(changeStateRequest.getId());
         return "处理完毕";
     }
 
     @ApiOperation(value = "详情")
     @RequestMapping(path = "/comment", method = RequestMethod.POST)
-    public String updateComment(@RequestBody UpdateCommentRequest updateCommentRequest){
+    public String updateComment(@RequestBody UpdateCommentRequest updateCommentRequest,@RequestHeader(value="token") String token){
         abnormalConditionService.updateComment(updateCommentRequest.getId(), updateCommentRequest.getComment());
         return "处理完毕";
     }
 
     @ApiOperation(value = "单个犯人异常（一体机）")
     @RequestMapping(path = "/getException", method = RequestMethod.GET)
-    public List<AbnormalCondition> getExceptionByPrisoner(@RequestParam(value = "prisonerId") String prisonerId, @RequestParam("token") String token) throws Exception{
+    public List<AbnormalCondition> getExceptionByPrisoner(@RequestParam(value = "prisonerId") String prisonerId, @RequestHeader(value="token") String token) throws Exception{
         String userId = adminService.getUserIdFromToken(token);
         List<RiskLevel> list = abnormalConditionService.getHighRiskLevelAndPrisoner(prisonerId);
         List<AbnormalCondition> abnormalConditions = new ArrayList<>();

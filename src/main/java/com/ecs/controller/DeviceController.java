@@ -9,13 +9,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 @RestController
 @RequestMapping(path = "/devices")
@@ -42,7 +41,7 @@ public class DeviceController {
 
     @ApiOperation(value = "获取设备信息")
     @RequestMapping(path = "/get", method = RequestMethod.GET)
-    public HttpResponseContent getByDeviceNo(@RequestParam("deviceNo") String deviceNo, @RequestParam("token") String token) throws Exception{
+    public HttpResponseContent getByDeviceNo(@RequestHeader(value="token") String token, @RequestParam("deviceNo") String deviceNo) throws Exception{
         String userId = adminService.getUserIdFromToken(token);
         HttpResponseContent response = new HttpResponseContent();
         Device device = deviceService.getByDeviceNo(deviceNo);
@@ -59,7 +58,10 @@ public class DeviceController {
 
     @ApiOperation(value = "获取所有设备信息")
     @RequestMapping(path = "/get_all", method = RequestMethod.GET)
-    public List<DeviceAndTask> getAll(@RequestParam("token") String token) throws Exception{
+    public List<DeviceAndTask> getAll(@RequestHeader(value="token") String token) throws Exception{
+        //System.out.println(headers.get("token").toString());
+        //String token = StringUtils.strip(headers.get("token").toString(),"[]");
+        System.out.println(token);
         String userId = adminService.getUserIdFromToken(token);
         List<DeviceAndTask> deviceAndTasks = new ArrayList<>();
         List<Device> devices = deviceService.getAll();
@@ -88,8 +90,7 @@ public class DeviceController {
     public HttpResponseContent createDevice(@RequestParam("deviceType") String deviceType,
                                             @RequestParam("deviceNo") String deviceNo,
                                             @RequestParam("userId") String userId,
-                                            @RequestParam(value = "deviceStatus" , defaultValue = "1") String deviceStatus,
-                                            @RequestParam("token") String token) {
+                                            @RequestParam(value = "deviceStatus" , defaultValue = "1") String deviceStatus) {
         HttpResponseContent response = new HttpResponseContent();
         boolean ds;
         if(deviceStatus.equals("true")) {

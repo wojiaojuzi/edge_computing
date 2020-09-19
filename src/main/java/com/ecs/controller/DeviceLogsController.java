@@ -7,10 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,7 +31,7 @@ public class DeviceLogsController {
 
     @ApiOperation(value = "获取全部设备日志")
     @RequestMapping(path = "/getLogs", method = RequestMethod.GET)
-    public List<DeviceLog> getAllLogs(@RequestParam("token") String token) throws Exception{
+    public List<DeviceLog> getAllLogs(@RequestHeader(value="token") String token) throws Exception{
         String userId = adminService.getUserIdFromToken(token);
         return deviceLogsService.getAllLogs();
     }
@@ -43,7 +40,7 @@ public class DeviceLogsController {
 
     @ApiOperation(value = "获取单个设备日志")
     @RequestMapping(path = "/getLog", method = RequestMethod.GET)
-    public List<DeviceLog> getLogByDeviceNo(@RequestParam("deviceNo") String deviceNo, @RequestParam("token") String token) throws Exception{
+    public List<DeviceLog> getLogByDeviceNo(@RequestParam("deviceNo") String deviceNo, @RequestHeader(value="token") String token) throws Exception{
         String userId = adminService.getUserIdFromToken(token);
         return deviceLogsService.getLogByDeviceNo(deviceNo);
     }

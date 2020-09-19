@@ -58,7 +58,7 @@ public class AdminController {
 
     @ApiOperation(value = "管理员信息")
     @RequestMapping(path = "/getAboutInformation", method = RequestMethod.GET)
-    public Admin aboutInformation(@RequestParam(value = "adminId") String adminId){
+    public Admin aboutInformation(@RequestParam(value = "adminId") String adminId,@RequestHeader(value="token") String token){
         return adminService.aboutInformation(adminId);
     }
 

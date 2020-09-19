@@ -9,10 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -81,7 +78,7 @@ public class PrisonerDataController {
 
     @ApiOperation(value = "获取犯人心率、风险预警值")
     @RequestMapping(path = "/getAll", method = RequestMethod.GET)
-    public List<Object> prisonerAllData(@RequestParam("token") String token) throws Exception {
+    public List<Object> prisonerAllData(@RequestHeader(value="token") String token) throws Exception {
         String userId = adminService.getUserIdFromToken(token);
         List<Prisoner> prisoners = physiologyDataReaderService.getAllPrisoners();
         List<Object> prisonerDataList = new ArrayList<>();
@@ -115,14 +112,14 @@ public class PrisonerDataController {
 
     @ApiOperation(value = "获取单个犯人心率、风险预警值")
     @RequestMapping(path = "/get", method = RequestMethod.GET)
-    public RiskLevel prisonerData(@RequestParam(value = "PrisonerId") String PrisonerId, @RequestParam("token") String token) throws Exception {
+    public RiskLevel prisonerData(@RequestParam(value = "PrisonerId") String PrisonerId, @RequestHeader(value="token") String token) throws Exception {
         String userId = adminService.getUserIdFromToken(token);
         return riskAssessmentService.getByPrisonerId(PrisonerId);
     }
 
     @ApiOperation(value = "获取单个视频的识别结果")
     @RequestMapping(path = "/getVideoType", method = RequestMethod.GET)
-    public VideoDetection videoDetectionData(@RequestParam(value = "CarNo") String CarNo, @RequestParam("token") String token) throws Exception {
+    public VideoDetection videoDetectionData(@RequestParam(value = "CarNo") String CarNo, @RequestHeader(value="token") String token) throws Exception {
         String userId = adminService.getUserIdFromToken(token);
         return riskAssessmentService.getByCarNo(CarNo);
     }
@@ -136,7 +133,7 @@ public class PrisonerDataController {
 
     @ApiOperation(value = "获取单个犯人心率")
     @RequestMapping(path = "/getSinglePrisonerHeartbeat", method = RequestMethod.GET)
-    public String singlePrisonerHeartbeat(@RequestParam(value = "PrisonerId") String PrisonerId, @RequestParam("token") String token) throws Exception{
+    public String singlePrisonerHeartbeat(@RequestParam(value = "PrisonerId") String PrisonerId, @RequestHeader(value="token") String token) throws Exception{
         String userId = adminService.getUserIdFromToken(token);
         return prisonerDataService.getLastestHeartbeat(PrisonerId);
     }
@@ -169,7 +166,7 @@ public class PrisonerDataController {
 
     @ApiOperation(value = "（前端轨迹展示）获取全部GPS数据")
     @RequestMapping(path = "/getCarGPS", method = RequestMethod.GET)
-    public List<GpsData> getAllGps2(@RequestParam("token") String token) throws Exception{
+    public List<GpsData> getAllGps2(@RequestHeader(value="token") String token) throws Exception{
         String userId = adminService.getUserIdFromToken(token);
         List<GpsData> gpsDataList = new ArrayList<>();
         List<Car> cars = carMapper.getAll();
@@ -190,7 +187,7 @@ public class PrisonerDataController {
 
     @ApiOperation(value = "逃逸犯人GPS")
     @RequestMapping(path = "/escapedPrisonerGPS", method = RequestMethod.GET)
-    public List<EscapeGps> getEscapePrisonerGPS(){
+    public List<EscapeGps> getEscapePrisonerGPS(@RequestHeader(value="token") String token){
         List<EscapeGps>  escapeGps = escapeGpsMapper.getLastest();
         return escapeGps;
     }
