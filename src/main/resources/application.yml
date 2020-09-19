@@ -1,0 +1,9 @@
+#spring:
+#  application:
+#    name: userModule
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://10.108.120.33:8761/eureka/
+#  instance:
+#    prefer-ip-address: true

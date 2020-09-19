@@ -1,0 +1,42 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+
+本页面是自动连接websocket
+<script type="text/javascript">
+    var socket;
+    if (typeof (WebSocket) == "undefined") {
+        console.log("遗憾：您的浏览器不支持WebSocket");
+    } else {
+        console.log("恭喜：您的浏览器支持WebSocket");
+
+        socket = new WebSocket("ws://localhost:8089/ws/webSocket/1");
+        //连接打开事件
+        socket.onopen = function() {
+            console.log("Socket 已打开");
+        };
+        //收到消息事件
+        socket.onmessage = function(msg) {
+            console.log(msg.data);
+        };
+        //连接关闭事件
+        socket.onclose = function() {
+            console.log("Socket已关闭");
+        };
+        //发生了错误事件
+        socket.onerror = function() {
+            alert("Socket发生了错误");
+        }
+
+        //窗口关闭时，关闭连接
+        window.unload=function() {
+            socket.close();
+        };
+    }
+</script>
+</body>
+</html>
