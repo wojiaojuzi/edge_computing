@@ -2,9 +2,11 @@ package com.ecs.service;
 
 import com.ecs.mapper.*;
 import com.ecs.model.*;
+import com.ecs.utils.SqlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -89,5 +91,14 @@ public class TaskService {
         String userName = userMapper.getByUserId(userId).getUserName();
         String prisonerName = taskMapper.getByUserName(userName).getPrisonerName();
         return prisonerMapper.getByPrisonerName(prisonerName).getPrisonerId();
+    }
+
+    public void inputTasks() throws SQLException, ClassNotFoundException {
+        SqlUtil.mybatisExec2();
+        SqlUtil.mybatisExec1();
+    }
+
+    public void dbTest() {
+        //deviceMapper.getAll();
     }
 }

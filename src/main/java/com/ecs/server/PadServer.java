@@ -3,6 +3,8 @@ package com.ecs.server;
 
 import com.alibaba.fastjson.JSON;
 import com.ecs.model.Admin;
+import com.ecs.model.Request.WebSocketObj;
+import com.ecs.utils.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -11,10 +13,11 @@ import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-@ServerEndpoint("/websocket/test")
+@ServerEndpoint("/websocket/pad")
 @Component
 public class PadServer {
     private static Logger log = LoggerFactory.getLogger(PadServer.class);
@@ -63,6 +66,10 @@ public class PadServer {
     @OnMessage
     public String onMessage(String message, Session session) {
         log.info("收到的信息:"+message);
+        WebSocketObj webSocketObj = JsonUtil.stringToObj(message, WebSocketObj.class);
+        if(webSocketObj.getType() == "heartRate"){
+
+        }
         //Map<String, Object> maps = new HashMap<>();
         //maps.put("type", message);
         //this.sendInfo(maps);

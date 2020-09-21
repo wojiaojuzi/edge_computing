@@ -3,6 +3,7 @@ package com.ecs.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.ecs.model.Car;
 import com.ecs.model.PrisonerAndTask;
+import com.ecs.model.Response.HttpResponseContent;
 import com.ecs.model.Task;
 import com.ecs.service.AdminService;
 import com.ecs.service.PrisonerService;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -139,4 +141,12 @@ public class TaskController {
         String user_Id = adminService.getUserIdFromToken(token);
         return taskService.getPrisonerIdByUserId(userId);
     }
+
+    @ApiOperation(value = "押解任务导入")
+    @RequestMapping(path = "/inputTasks", method = RequestMethod.GET)
+    public HttpResponseContent inputTasks() throws SQLException, ClassNotFoundException {
+        taskService.inputTasks();
+        return null;
+    }
+
 }
